@@ -50,6 +50,7 @@ public class ExpenseTrackerModel {
     transactions.add(t);
     // The previous filter is no longer valid.
     matchedFilterIndices.clear();
+    stateChanged();
   }
 
   /**
@@ -61,6 +62,7 @@ public class ExpenseTrackerModel {
     transactions.remove(t);
     // The previous filter is no longer valid.
     matchedFilterIndices.clear();
+    stateChanged();
   }
 
   /**
@@ -89,6 +91,7 @@ public class ExpenseTrackerModel {
       // For encapsulation, copy in the input list 
       this.matchedFilterIndices.clear();
       this.matchedFilterIndices.addAll(newMatchedFilterIndices);
+      stateChanged();
   }
 
     /**
@@ -163,12 +166,5 @@ public class ExpenseTrackerModel {
       for (ExpenseTrackerModelListener listener : listeners) {
           listener.update(this);
       }
-  }
-
-  /**
-   * Sets the application with the new state in case any state change occurs.
-   */
-  public void setState(){
-      stateChanged();
   }
 }

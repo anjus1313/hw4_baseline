@@ -45,8 +45,6 @@ public class ExpenseTrackerController {
     
     Transaction t = new Transaction(amount, category);
     model.addTransaction(t);
-    //view.update(model);
-    model.setState();
     return true;
   }
 
@@ -64,8 +62,6 @@ public class ExpenseTrackerController {
         }
       }
       model.setMatchedFilterIndices(rowIndexes);
-      //view.update(model);
-      model.setState();
     }
     else{
       JOptionPane.showMessageDialog(view, "No filter applied");
@@ -78,8 +74,6 @@ public class ExpenseTrackerController {
     if (rowIndex >= 0 && rowIndex < model.getTransactions().size()) {
       Transaction removedTransaction = model.getTransactions().get(rowIndex);
       model.removeTransaction(removedTransaction);
-      //view.update(model);
-      model.setState();
       // The undo was allowed.
       return true;
     }
