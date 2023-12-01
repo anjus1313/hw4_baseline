@@ -1,4 +1,12 @@
 package model;
+/**
+ * The ExpenseTrackerModel class is a model class for the expense tracker app that performs
+ * updates in the database of transactions. It registers listeners and notifies them when a
+ * state change occurs.
+ *
+ * @see model.Transaction
+ * @see model.ExpenseTrackerModelListener
+ */
 
 import java.util.ArrayList;
 import java.util.Collections;
