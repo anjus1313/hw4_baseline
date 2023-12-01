@@ -11,6 +11,8 @@ package model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 public class ExpenseTrackerModel {
 
@@ -18,12 +20,16 @@ public class ExpenseTrackerModel {
   private List<Transaction> transactions;
   private List<Integer> matchedFilterIndices;
 
+  // List to store registered listeners
+  protected Set<ExpenseTrackerModelListener> listeners;
+
   // This is applying the Observer design pattern.                          
   // Specifically, this is the Observable class. 
     
   public ExpenseTrackerModel() {
     transactions = new ArrayList<Transaction>();
     matchedFilterIndices = new ArrayList<Integer>();
+    listeners = new HashSet<>();
   }
 
   public void addTransaction(Transaction t) {
@@ -79,28 +85,39 @@ public class ExpenseTrackerModel {
    */   
   public boolean register(ExpenseTrackerModelListener listener) {
       // For the Observable class, this is one of the methods.
-      //
-      // TODO
+      if (listener!=null && !containsListener(listener)){
+          listeners.add(listener);
+          return true;
+      }
+      return false;
+  }
+  public boolean unregister(ExpenseTrackerModelListener listener) {
+      // For the Observable class, this is one of the methods.
+      if (listener!=null && containsListener(listener)){
+          listeners.remove(listener);
+          return true;
+      }
       return false;
   }
 
   public int numberOfListeners() {
       // For testing, this is one of the methods.
-      //
-      //TODO
-      return 0;
+      return listeners.size();
   }
 
   public boolean containsListener(ExpenseTrackerModelListener listener) {
       // For testing, this is one of the methods.
-      //
-      //TODO
-      return false;
+      return listeners.contains(listener);
   }
 
   protected void stateChanged() {
       // For the Observable class, this is one of the methods.
-      //
-      //TODO
+      for (ExpenseTrackerModelListener listener : listeners) {
+          listener.update(this);
+      }
+  }
+
+  public void setState(){
+      stateChanged();
   }
 }
