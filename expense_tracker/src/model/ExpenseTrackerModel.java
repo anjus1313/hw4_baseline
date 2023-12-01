@@ -25,13 +25,23 @@ public class ExpenseTrackerModel {
 
   // This is applying the Observer design pattern.                          
   // Specifically, this is the Observable class. 
-    
+
+    /**
+     * Contructor method
+     * Declares the new array lists to contain transactions and filter indices.
+     * Declares new hash set to contain all the observers (listeners) of the Model class.
+      */
   public ExpenseTrackerModel() {
     transactions = new ArrayList<Transaction>();
     matchedFilterIndices = new ArrayList<Integer>();
     listeners = new HashSet<>();
   }
 
+    /**
+     * Adds a valid Transaction to the list of transactions.
+     * It also clears any previous filtering.
+     * @param t The transaction to be added
+     */
   public void addTransaction(Transaction t) {
     // Perform input validation to guarantee that all transactions added are non-null.
     if (t == null) {
@@ -42,17 +52,30 @@ public class ExpenseTrackerModel {
     matchedFilterIndices.clear();
   }
 
+  /**
+   * Removes a Transaction from the list of transactions.
+   * It also clears any previous filtering.
+   * @param t The transaction to be removed
+   */
   public void removeTransaction(Transaction t) {
     transactions.remove(t);
     // The previous filter is no longer valid.
     matchedFilterIndices.clear();
   }
 
+  /**
+   * Returns the list of transactions as an unmodifiable list.
+   * @return List of transactions
+   */
   public List<Transaction> getTransactions() {
     //encapsulation - data integrity
     return Collections.unmodifiableList(new ArrayList<>(transactions));
   }
 
+    /**
+     * Validates the rows to be filtered/highlighted and stores them in a new array List - newMatchedFilterIndices
+     * @param newMatchedFilterIndices The list of rows to be filtered/highlighted
+     */
   public void setMatchedFilterIndices(List<Integer> newMatchedFilterIndices) {
       // Perform input validation
       if (newMatchedFilterIndices == null) {
@@ -68,6 +91,10 @@ public class ExpenseTrackerModel {
       this.matchedFilterIndices.addAll(newMatchedFilterIndices);
   }
 
+    /**
+     * Returns a copy of the list of rows to be filtered/highlighted
+     * @return An arrayList of rows to be filtered/highlighted
+     */
   public List<Integer> getMatchedFilterIndices() {
       // For encapsulation, copy out the output list
       List<Integer> copyOfMatchedFilterIndices = new ArrayList<Integer>();
@@ -91,6 +118,14 @@ public class ExpenseTrackerModel {
       }
       return false;
   }
+
+  /**
+   * Unregisters the given ExpenseTrackerModelListener for
+   * state change events.
+   * @param listener The ExpenseTrackerModelListener to be unregistered
+   * @return If the listener is non-null and is already registered,
+   *         returns true. If not, returns false.
+   */
   public boolean unregister(ExpenseTrackerModelListener listener) {
       // For the Observable class, this is one of the methods.
       if (listener!=null && containsListener(listener)){
@@ -100,16 +135,29 @@ public class ExpenseTrackerModel {
       return false;
   }
 
+  /**
+   * Returns the number of registered listeners
+   * @return Number of registered listeners
+   */
   public int numberOfListeners() {
       // For testing, this is one of the methods.
       return listeners.size();
   }
 
+  /**
+   * Checks if the given ExpenseTrackerModelListener is registered
+   * @param listener The ExpenseTrackerModelListener to be checked for registration
+   * @return If the ExpenseTrackerModelListener is registered, returns true.
+   *         If not, returns false.
+   */
   public boolean containsListener(ExpenseTrackerModelListener listener) {
       // For testing, this is one of the methods.
       return listeners.contains(listener);
   }
 
+  /**
+   * Updates all the registered ExpenseTrackerModelListener in case any state change occurs.
+   */
   protected void stateChanged() {
       // For the Observable class, this is one of the methods.
       for (ExpenseTrackerModelListener listener : listeners) {
@@ -117,6 +165,9 @@ public class ExpenseTrackerModel {
       }
   }
 
+  /**
+   * Sets the application with the new state in case any state change occurs.
+   */
   public void setState(){
       stateChanged();
   }
